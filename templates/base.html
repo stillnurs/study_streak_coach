@@ -23,13 +23,30 @@
                 >
                 <a
                     class="px-3 {% if request.endpoint == 'history' %}active{% endif %}"
-                    href="{{ ('history') }}"
+                    href="{{ url_for('history') }}"
                     >History</a
                 >
             </div>
         </div>
     </nav>
 <main class="container pb-5">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div
+                class="alert alert-{{ category }} alert-dismissible fade show mt-3"
+                role="alert"
+            >
+                {{ message }}
+                <button
+                    type="button"
+                    class="btn-close"
+                    data-bs-dismiss="alert"
+                    aria-label="Close"
+                ></button>
+            </div>
+        {% endfor %}
+    {% endwith %}
+
     {% block main %}
     {% endblock %}
     </main>
