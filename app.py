@@ -124,7 +124,7 @@ def index():
     max_minutes = max((item["minutes"] for item in week_chart), default=0)
     for item in week_chart:
         item["height"] = (
-            max(8, round((item["minutes"] / max_minutes) * 100)) if max_minutes else 8
+            max(1, round((item["minutes"] / max_minutes) * 100)) if max_minutes else 8
         )
 
     return render_template(
