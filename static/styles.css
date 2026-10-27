@@ -241,31 +241,80 @@ h2 {
 	font-size: 0.72rem;
 	margin-top: 0.5rem;
 }
-.weekdays,
-.activity-grid {
+.calendar-weekdays,
+.month-grid {
 	display: grid;
 	grid-template-columns: repeat(7, 1fr);
-	gap: 0.48rem;
+	gap: 0.42rem;
 }
-.weekdays {
-	margin-bottom: 0.45rem;
-}
-.weekdays span {
-	color: var(--muted);
-	font-size: 0.67rem;
+.calendar-heading {
+	align-items: center;
+	display: grid;
+	grid-template-columns: 2.4rem 1fr 2.4rem;
+	margin-bottom: 1.25rem;
 	text-align: center;
 }
-.activity-day {
-	aspect-ratio: 1;
-	background: #edf0ea;
-	border-radius: 0.3rem;
+.calendar-heading .eyebrow {
+	margin-bottom: 0.2rem;
 }
-.activity-day.active {
+.calendar-arrow {
+	align-items: center;
+	border: 1px solid #dfe6de;
+	border-radius: 50%;
+	color: var(--forest);
+	display: flex;
+	font-size: 1.7rem;
+	height: 2.25rem;
+	justify-content: center;
+	line-height: 1;
+	text-decoration: none;
+	transition: background-color .15s ease, color .15s ease;
+	width: 2.25rem;
+}
+.calendar-arrow:hover {
 	background: var(--forest);
+	color: white;
 }
-.activity-day.today {
-	outline: 2px solid var(--coral);
-	outline-offset: 2px;
+.calendar-weekdays {
+	margin-bottom: 0.42rem;
+}
+.calendar-weekdays span {
+	color: var(--muted);
+	font-size: 0.67rem;
+	font-weight: 700;
+	text-align: center;
+}
+.calendar-day {
+	aspect-ratio: 1.1;
+	background: #eef2ec;
+	border: 1px solid transparent;
+	border-radius: .55rem;
+	color: #7f8b83;
+	display: flex;
+	justify-content: flex-end;
+	min-height: 2.55rem;
+	padding: .35rem .42rem;
+}
+.calendar-date {
+	font-size: .72rem;
+	font-weight: 700;
+	line-height: 1;
+}
+.calendar-day.active {
+	background: var(--forest);
+	color: white;
+}
+.calendar-day.outside-month {
+	background: #f3f3ef;
+	color: #b1b8b2;
+}
+.calendar-day.outside-month.active {
+	background: #d9e5db;
+	color: #6f8677;
+}
+.calendar-day.today {
+	border-color: var(--coral);
+	box-shadow: 0 0 0 1px var(--coral);
 }
 .activity-note {
 	color: var(--muted);
@@ -412,12 +461,16 @@ h2 {
 	.panel {
 		padding: 1.15rem;
 	}
-	.weekdays,
-	.activity-grid {
+	.calendar-weekdays,
+	.month-grid {
 		gap: 0.3rem;
 	}
-	.weekdays span {
+	.calendar-weekdays span {
 		font-size: 0.56rem;
+	}
+	.calendar-day {
+		min-height: 2.25rem;
+		padding: .3rem;
 	}
 	.bar-chart {
 		gap: 0.45rem;

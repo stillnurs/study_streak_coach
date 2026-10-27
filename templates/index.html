@@ -1,9 +1,4 @@
 {% extends "base.html" %}
-{% block title %}
-
-Study History · Study Streak Coach
-
-{% endblock%}
 {% block main %}
 
 <section class="hero">
@@ -145,28 +140,40 @@ Study History · Study Streak Coach
 
 <section class="row g-4 mt-1">
 	<div class="col-lg-7">
-		<article class="panel h-100">
-			<div class="panel-heading">
+		<article class="panel calendar-panel h-100">
+			<div class="calendar-heading">
+				<a
+					class="calendar-arrow"
+					href="{{ url_for('index', month=previous_month.strftime('%Y-%m')) }}"
+					aria-label="Previous month: {{ previous_month.strftime('%B %Y') }}"
+				>‹</a>
 				<div>
-					<p class="eyebrow">Show up</p>
-					<h2>Activity</h2>
+					<p class="eyebrow">Study activity</p>
+					<h2>{{ calendar_month.strftime('%B %Y') }}</h2>
 				</div>
-				<span class="muted-label">Green = study day</span>
+				<a
+					class="calendar-arrow"
+					href="{{ url_for('index', month=next_month.strftime('%Y-%m')) }}"
+					aria-label="Next month: {{ next_month.strftime('%B %Y') }}"
+				>›</a>
 			</div>
-			<div class="weekdays">
+			<div class="calendar-weekdays">
 				{% for weekday in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
 				%}<span>{{ weekday }}</span>{% endfor %}
 			</div>
-			<div class="activity-grid">
-				{% for day in calendar %}
+			<div class="month-grid">
+				{% for week in calendar %}
+					{% for day in week %}
 				<div
-					class="activity-day {% if day.active %}active{% endif %} {% if day.date == today %}today{% endif %}"
+					class="calendar-day {% if not day.in_month %}outside-month{% endif %} {% if day.active %}active{% endif %} {% if day.date == today %}today{% endif %}"
+					data-calendar-date="{{ day.date.isoformat() }}"
 					title="{{ day.date.strftime('%b %-d, %Y') }}{% if day.active %}: studied{% endif %}"
-				></div>
+				><span class="calendar-date">{{ day.date.day }}</span></div>
+					{% endfor %}
 				{% endfor %}
 			</div>
 			<p class="activity-note">
-				Each filled square is a day you made time to learn.
+				Green marks a study day. Faded dates belong to the previous or next month.
 			</p>
 		</article>
 	</div>

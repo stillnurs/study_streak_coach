@@ -1,5 +1,6 @@
 import os
 import sqlite3
+from calendar import Calendar
 from collections import defaultdict
 from datetime import date, datetime, timedelta
 
@@ -60,23 +61,40 @@ def day_streak(active_dates, today):
     return streak
 
 
-def calendar_days(active_dates, today):
-    """Build the last 35 days for a compact, Monday-first activity grid."""
-    start = today - timedelta(days=34)
-    start -= timedelta(days=start.weekday())
+def month_calendar(active_dates, month):
+    """Return complete Monday-first weeks, including adjacent-month days."""
     return [
-        {
-            "date": start + timedelta(days=offset),
-            "active": start + timedelta(days=offset) in active_dates,
-        }
-        for offset in range(35)
+        [
+            {
+                "date": day,
+                "active": day in active_dates,
+                "in_month": day.month == month.month and day.year == month.year,
+            }
+            for day in week
+        ]
+        for week in Calendar(firstweekday=0).monthdatescalendar(month.year, month.month)
     ]
+
+
+def calendar_month(value, today):
+    """Parse a YYYY-MM query parameter, falling back safely to this month."""
+    try:
+        return datetime.strptime(value, "%Y-%m").date().replace(day=1)
+    except (TypeError, ValueError):
+        return today.replace(day=1)
+
+
+def move_month(month, offset):
+    """Move a first-of-month date backward or forward by whole months."""
+    month_number = month.month - 1 + offset
+    return date(month.year + month_number // 12, month_number % 12 + 1, 1)
 
 
 @app.route("/")
 def index():
     db = get_db()
     today = date.today()
+    displayed_month = calendar_month(request.args.get("month"), today)
     week_start = today - timedelta(days=today.weekday())
 
     all_sessions = db.execute(
@@ -118,7 +136,10 @@ def index():
         total_sessions=len(all_sessions),
         streak=day_streak(active_dates, today),
         recent_sessions=all_sessions[:5],
-        calendar=calendar_days(active_dates, today),
+        calendar=month_calendar(active_dates, displayed_month),
+        calendar_month=displayed_month,
+        previous_month=move_month(displayed_month, -1),
+        next_month=move_month(displayed_month, 1),
         week_chart=week_chart,
     )
 
