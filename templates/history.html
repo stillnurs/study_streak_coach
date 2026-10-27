@@ -6,13 +6,13 @@ Study History · Study Streak Coach
 {% endblock %}
 {% block main %}
 
-<section class="mb-4">
-	<p>Your record</p>
+<section class="history-heading">
+	<p class="eyebrow">Your record</p>
 	<h1>Study history</h1>
 	<p>Every session is evidence that you showed up.</p>
 </section>
 
-<article>
+<article class="panel table-panel">
 	{% if sessions %}
 	<div class="table-responsive">
 		<table class="table align-middle mb-0">
@@ -30,8 +30,8 @@ Study History · Study Streak Coach
 				<tr>
 					<td>{{ session.study_date }}</td>
 					<td><strong>{{ session.subject }}</strong></td>
-					<td><span>{{ session.minutes }} min</span></td>
-					<td>{{ session.note or '—' }}</td>
+					<td><span class="time-pill">{{ session.minutes }} min</span></td>
+					<td class="note-cell">{{ session.note or '—' }}</td>
 					<td class="text-end">
 						<form
 							action="{{ url_for('delete_session', session_id=session.id) }}"
@@ -53,7 +53,7 @@ Study History · Study Streak Coach
 		</table>
 	</div>
 	{% else %}
-	<div>
+	<div class="empty-state history-empty">
 		<span>⌁</span>
 		<p>No sessions yet. Your first one is waiting on the dashboard.</p>
 		<a href="{{ url_for('index') }}" class="btn btn-primary">Log a session</a>

@@ -6,6 +6,7 @@ from datetime import date, datetime, timedelta
 from flask import Flask, flash, g, redirect, render_template, request, url_for
 
 app = Flask(__name__)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY", "some-very-secret-default-key")
 app.config["DATABASE"] = os.environ.get(
     "STUDY_DB", os.path.join(app.root_path, "study_streak.db")
 )

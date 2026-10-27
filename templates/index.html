@@ -6,58 +6,202 @@ Study History · Study Streak Coach
 {% endblock%}
 {% block main %}
 
-<section>
-	<p>Your record</p>
-	<h1>Study history</h1>
-	<p>Every session is evidence that you showed up.</p>
+<section class="hero">
+	<p class="eyebrow">{{ today.strftime('%A, %B %-d') }}</p>
+	<div class="d-flex align-items-end justify-content-between gap-3 flex-wrap">
+		<div>
+			<h1>Small sessions.<br /><em>Real momentum.</em></h1>
+			<p class="hero-copy">Log what you learn, then let consistency do the rest.</p>
+		</div>
+		<div class="streak-badge">
+			<span class="streak-icon">🔥</span>
+			<div>
+				<strong>{{ streak }} day{{ '' if streak == 1 else 's' }}</strong
+				><small>current streak</small>
+			</div>
+		</div>
+	</div>
 </section>
 
-<article class="">
-	{% if sessions %}
-	<div>
-		<table class="align-middle mb-0">
-			<thead>
-				<tr>
-					<th>Date</th>
-					<th>Subject</th>
-					<th>Minutes</th>
-					<th>Note</th>
-					<th><span class="visually-hidden">Delete</span></th>
-				</tr>
-			</thead>
-			<tbody>
-				{% for session in sessions %}
-				<tr>
-					<td>{{ session.study_date }}</td>
-					<td><strong>{{ session.subject }}</strong></td>
-					<td><span>{{ session.minutes }} min</span></td>
-					<td>{{ session.note or '—' }}</td>
-					<td class="text-end">
-						<form
-							action="{{ url_for('delete_session', session_id=session.id) }}"
-							method="post"
-						>
-							<button
-								class="btn btn-sm btn-outline-danger"
-								type="submit"
-								aria-label="Delete {{ session.subject }} session"
-								onclick="return confirm('Remove this study session?');"
-							>
-								Delete
-							</button>
-						</form>
-					</td>
-				</tr>
+<section class="row g-3 stats-row">
+	<div class="col-6 col-lg-3">
+		<article class="stat-card">
+			<span>Today</span><strong>{{ today_minutes }}</strong
+			><small>minutes studied</small>
+		</article>
+	</div>
+	<div class="col-6 col-lg-3">
+		<article class="stat-card">
+			<span>This week</span><strong>{{ week_minutes }}</strong
+			><small>minutes studied</small>
+		</article>
+	</div>
+	<div class="col-6 col-lg-3">
+		<article class="stat-card">
+			<span>Total focus</span><strong>{{ total_minutes }}</strong
+			><small>minutes logged</small>
+		</article>
+	</div>
+	<div class="col-6 col-lg-3">
+		<article class="stat-card">
+			<span>Sessions</span><strong>{{ total_sessions }}</strong
+			><small>all time</small>
+		</article>
+	</div>
+</section>
+
+<section class="row g-4 mt-1">
+	<div class="col-lg-5">
+		<article class="panel log-panel h-100">
+			<div class="panel-heading">
+				<div>
+					<p class="eyebrow">Make it count</p>
+					<h2>Log a session</h2>
+				</div>
+				<span class="sparkle">✦</span>
+			</div>
+			<form action="{{ url_for('add_session') }}" method="post" class="row g-3">
+				<div class="col-7">
+					<label class="form-label" for="subject">What did you study?</label
+					><input
+						class="form-control"
+						id="subject"
+						name="subject"
+						maxlength="50"
+						placeholder="e.g. Python"
+						required
+					/>
+				</div>
+				<div class="col-5">
+					<label class="form-label" for="minutes">Minutes</label
+					><input
+						class="form-control"
+						id="minutes"
+						name="minutes"
+						type="number"
+						min="1"
+						max="1440"
+						placeholder="45"
+						required
+					/>
+				</div>
+				<div class="col-12">
+					<label class="form-label" for="study_date">Date</label
+					><input
+						class="form-control"
+						id="study_date"
+						name="study_date"
+						type="date"
+						value="{{ today.isoformat() }}"
+						max="{{ today.isoformat() }}"
+						required
+					/>
+				</div>
+				<div class="col-12">
+					<label class="form-label" for="note"
+						>A quick note <span>(optional)</span></label
+					><textarea
+						class="form-control"
+						id="note"
+						name="note"
+						maxlength="200"
+						rows="2"
+						placeholder="What clicked today?"
+					></textarea>
+				</div>
+				<div class="col-12">
+					<button class="btn btn-primary w-100 py-2" type="submit">
+						Add study session <span>→</span>
+					</button>
+				</div>
+			</form>
+		</article>
+	</div>
+	<div class="col-lg-7">
+		<article class="panel h-100">
+			<div class="panel-heading">
+				<div>
+					<p class="eyebrow">Your rhythm</p>
+					<h2>Last 7 days</h2>
+				</div>
+				<span class="muted-label">{{ week_minutes }} mins total</span>
+			</div>
+			<div class="bar-chart" aria-label="Minutes studied in the last seven days">
+				{% for item in week_chart %}
+				<div class="bar-column">
+					<span class="bar-value"
+						>{% if item.minutes %}{{ item.minutes }}m{% endif %}</span
+					>
+					<div class="bar-track">
+						<div class="bar" style="height: {{ item.height }}%"></div>
+					</div>
+					<span class="bar-label">{{ item.label }}</span>
+				</div>
 				{% endfor %}
-			</tbody>
-		</table>
+			</div>
+		</article>
 	</div>
-	{% else %}
-	<div>
-		<span>⌁</span>
-		<p>No sessions yet. Your first one is waiting on the dashboard.</p>
-		<a href="{{ url_for('index') }}" class="btn btn-primary">Log a session</a>
+</section>
+
+<section class="row g-4 mt-1">
+	<div class="col-lg-7">
+		<article class="panel h-100">
+			<div class="panel-heading">
+				<div>
+					<p class="eyebrow">Show up</p>
+					<h2>Activity</h2>
+				</div>
+				<span class="muted-label">Green = study day</span>
+			</div>
+			<div class="weekdays">
+				{% for weekday in ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+				%}<span>{{ weekday }}</span>{% endfor %}
+			</div>
+			<div class="activity-grid">
+				{% for day in calendar %}
+				<div
+					class="activity-day {% if day.active %}active{% endif %} {% if day.date == today %}today{% endif %}"
+					title="{{ day.date.strftime('%b %-d, %Y') }}{% if day.active %}: studied{% endif %}"
+				></div>
+				{% endfor %}
+			</div>
+			<p class="activity-note">
+				Each filled square is a day you made time to learn.
+			</p>
+		</article>
 	</div>
-	{% endif %}
-</article>
+	<div class="col-lg-5">
+		<article class="panel h-100">
+			<div class="panel-heading">
+				<div>
+					<p class="eyebrow">Keep going</p>
+					<h2>Recent sessions</h2>
+				</div>
+				<a class="subtle-link" href="{{ url_for('history') }}">All history →</a>
+			</div>
+			{% if recent_sessions %}
+			<div class="session-list">
+				{% for session in recent_sessions %}
+				<div class="session-item">
+					<div class="subject-icon">{{ session.subject[0].upper() }}</div>
+					<div class="session-detail">
+						<strong>{{ session.subject }}</strong
+						><span
+							>{{ session.study_date }}{% if session.note %} · {{
+							session.note }}{% endif %}</span
+						>
+					</div>
+					<b>{{ session.minutes }}m</b>
+				</div>
+				{% endfor %}
+			</div>
+			{% else %}
+			<div class="empty-state">
+				<span>⌁</span>
+				<p>Your sessions will appear here.<br />Start with a small win today.</p>
+			</div>
+			{% endif %}
+		</article>
+	</div>
+</section>
 {% endblock %}
