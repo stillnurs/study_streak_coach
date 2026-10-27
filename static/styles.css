@@ -330,6 +330,7 @@ h2 {
 	border-bottom: 1px solid #edf0eb;
 	display: flex;
 	gap: 0.7rem;
+	min-width: 0;
 	padding: 0.55rem 0;
 }
 .session-item:last-child {
@@ -349,12 +350,16 @@ h2 {
 	width: 2rem;
 }
 .session-detail {
+	flex: 1 1 auto;
 	min-width: 0;
-	flex: 1;
+	overflow: hidden;
 }
 .session-detail strong,
 .session-detail span {
 	display: block;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 .session-detail strong {
 	font-size: 0.87rem;
@@ -362,13 +367,13 @@ h2 {
 .session-detail span {
 	color: var(--muted);
 	font-size: 0.72rem;
-	overflow: hidden;
-	text-overflow: ellipsis;
-	white-space: nowrap;
 }
 .session-item b {
 	color: var(--forest);
+	flex: 0 0 auto;
 	font-size: 0.82rem;
+	padding-left: 0.15rem;
+	white-space: nowrap;
 }
 .subtle-link {
 	color: var(--forest);
@@ -428,7 +433,9 @@ h2 {
 }
 .note-cell {
 	color: var(--muted);
-	max-width: 300px;
+	min-width: 18rem;
+	overflow-wrap: anywhere;
+	white-space: normal;
 }
 .time-pill {
 	background: var(--mint);
