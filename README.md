@@ -1,11 +1,12 @@
-# Study Streak Coach
+# Study Streak Coach (cs50 Final Project)
 
 #### Video Demo
-<URL HERE>
+
+https://youtu.be/4XZ35gatrFI
 
 #### Description
 
-A Flask app for loggin study sessions and tracking streaks while building a visible daily study habit. Users can log their study sessions, view their streaks, and gain motivation to maintain a consistent study routine. The app provides a simple interface to input study sessions, visualize progress, and receive reminders to keep the streak alive. It stores data locally in SQLite and no account or external API is needed.
+A Flask app for logging study sessions and tracking streaks while building a visible daily study habit. Users can log their study sessions, view their streaks, and gain motivation to maintain a consistent study routine. The app provides a simple interface to input study sessions, visualize progress, and receive reminders to keep the streak alive. It stores data locally in SQLite and no account or external API is needed.
 
 #### Features
 
@@ -14,3 +15,18 @@ A Flask app for loggin study sessions and tracking streaks while building a visi
 - Track a consecutive-day streak
 - View the last five weeks of study activity
 - Browse and delete past session records
+
+#### Tools used in this project
+
+- Python
+- Flask
+- SQLite
+- HTML/CSS
+- Bootstrap
+- VS Code
+- Copilot
+
+##### Creator details
+
+- GitHub username: [stillnurs]
+- edX username: [stillnurs]
