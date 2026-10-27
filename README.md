@@ -28,5 +28,5 @@ A Flask app for logging study sessions and tracking streaks while building a vis
 
 ##### Creator details
 
-- GitHub username: [stillnurs]
-- edX username: [stillnurs]
+- GitHub username: [stillnurs](https://github.com/stillnurs)
+- edX username: [stillnurs](https://profile.edx.org/u/stillnurs)
